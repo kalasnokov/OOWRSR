@@ -53,7 +53,7 @@ public class Server extends JFrame {
 		textField = new JTextField();
 		textField.setColumns(10);
 		JCheckBox Debug = new JCheckBox("Debug");
-		Debug.setSelected(config.ReadSetting("debug"));
+		Debug.setSelected(config.ReadBooleanSetting("debug"));
 		Debug.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				b.setDebug(Debug.isSelected());
@@ -66,7 +66,7 @@ public class Server extends JFrame {
 		});
 
 		JCheckBox IcCheck = new JCheckBox("IC check");
-		IcCheck.setSelected(config.ReadSetting("iccheck"));
+		IcCheck.setSelected(config.ReadBooleanSetting("iccheck"));
 		IcCheck.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				b.setICCheck(IcCheck.isSelected());
@@ -107,8 +107,8 @@ public class Server extends JFrame {
 		setVisible(true);
 
 		ap("Base is being created\n");
-		b = new Base(config.ReadSetting("debug"),
-				config.ReadSetting("iccheck"), this);
+		b = new Base(config.ReadBooleanSetting("debug"),
+				config.ReadBooleanSetting("iccheck"), this);
 		
 		ap(b.getserverlog());
 	}

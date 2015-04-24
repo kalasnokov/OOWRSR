@@ -7,7 +7,7 @@ public class Presets {
 		return s;
 	}
 	public String[] bindings() {
-		String[] s = { "OOWRSR key bindings", "Wleft:A", "Wright:B", "Jump:space","Crouch:S","Chat:enter","" };
+		String[] s = { "OOWRSR key bindings", "Wleft:A", "Wright:D", "Jump:space","Crouch:S","Chat:enter","" };
 		return s;
 	}
 }

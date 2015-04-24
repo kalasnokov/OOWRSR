@@ -60,7 +60,6 @@ public class Base {
 			new Thread(new Runnable() {
 				public void run() {
 					while (running) {
-
 						byte[] buf = new byte[1024];
 						DatagramPacket dgp = new DatagramPacket(buf, buf.length);
 						try {

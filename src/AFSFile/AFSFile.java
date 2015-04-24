@@ -26,7 +26,7 @@ public class AFSFile {
 				recUrl += US[i];
 			}
 			f = new File(recUrl);
-			if (!f.exists() && i != US.length - 1) {
+			if (!f.exists() && i != US.length - 1 && !f.isDirectory()) {
 				f.mkdir();
 				if (debug) {
 					s("Path \"" + recUrl + "\" created");
@@ -53,8 +53,8 @@ public class AFSFile {
 	}
 
 	// function to get true/false info from config lines
-	public Boolean ReadSetting(String setting) throws FileNotFoundException,
-			IOException {
+	public Boolean ReadBooleanSetting(String setting)
+			throws FileNotFoundException, IOException {
 		if (!broken) {
 			if (debug) {
 				s("Read file URL: \"" + recUrl + "\"");
@@ -91,6 +91,47 @@ public class AFSFile {
 			}
 		} else {
 			return false;
+		}
+	}
+
+	public String ReadSetting(String setting) throws FileNotFoundException,
+			IOException {
+		if (!broken) {
+			if (debug) {
+				s("Read file URL: \"" + recUrl + "\"");
+			}
+			String out = "";
+			String[] set = { "" };
+			try (BufferedReader br = new BufferedReader(new FileReader(recUrl))) {
+				StringBuilder sb = new StringBuilder();
+				while (true) {
+					if (set[0].toLowerCase().equals(setting.toLowerCase())) {
+						break;
+					}
+					String line = br.readLine();
+					if (line != null) {
+						set = line.split(":");
+					} else {
+						s("No setting with name " + setting + " found");
+						break;
+					}
+				}
+				br.close();
+				if (set.length < 2) {
+					s("Input \"" + setting + "\" was not a setting");
+					return null;
+				} else {
+					sb.append(set[1]);
+					out = sb.toString();
+					if (debug) {
+						s("Setting " + setting + " returning "
+								+ Boolean.valueOf(out));
+					}
+					return out;
+				}
+			}
+		} else {
+			return null;
 		}
 	}
 

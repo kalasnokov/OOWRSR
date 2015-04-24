@@ -20,6 +20,7 @@ public class Game extends Head {
 	public int xoffset = 0;
 	public int yoffset = 0;
 	private Keybinder Keybinder;
+	boolean debug=false;
 
 	public enum State {
 		MENU, PLAYING, STARTING
@@ -36,7 +37,7 @@ public class Game extends Head {
 		gameState = State.MENU;
 
 		keys = new Keys();
-		Keybinder= new Keybinder(true);
+		Keybinder= new Keybinder(debug, this);
 	}
 
 	public void loadAssets() {
@@ -53,9 +54,6 @@ public class Game extends Head {
 	}
 
 	public void quit() {
-	}
-	public void space(){
-		so("Holy shit");
 	}
 
 	public void update(double dt) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {

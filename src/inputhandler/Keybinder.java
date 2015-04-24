@@ -12,52 +12,70 @@ import Engine.Game;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-public class Keybinder extends Game{
+public class Keybinder {
 	AFSFile f;
 	String WL;// walk left
 	String WR;// walk right
 	String J;// jump
 	String C;// crouch
 	String CH;// chat
+	Boolean debug;
+	String[] coms = new String[1000];
+	BFCC bfcc;
 
-	public Keybinder(Boolean debug) throws FileNotFoundException,
+	public Keybinder(Boolean debug, Game game) throws FileNotFoundException,
 			IOException {
+		bfcc = new BFCC(game);
+		this.debug = debug;
 		f = new AFSFile("res/options/bindings.cfg", new Presets().bindings(),
 				debug);
-		WL = f.ReadSetting("wleft").toLowerCase();
-		WR = f.ReadSetting("wright").toLowerCase();
-		J = f.ReadSetting("jump").toLowerCase();
-		C = f.ReadSetting("Crouch").toLowerCase();
-		CH = f.ReadSetting("chat").toLowerCase();
+		int i = 1;
+		while (true) {
+			if (!f.ReadLine(i).isEmpty()) {
+				coms[i - 1] = f.ReadLine(i);
+				if (debug) {
+				}
+			} else {
+				break;
+			}
+			i++;
+		}
 	}
 
 	public void readinput(Game game) throws IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
 		while (Keyboard.next()) {
+			String[] com = new String[2];
 			String inp = Keyboard.getKeyName(Keyboard.getEventKey())
 					.toLowerCase();
+			String fin = null;
+			for (int i = 0; i < coms.length; i++) {
+				if (!(coms[i] == null)) {
+					com = coms[i].split(":");
+					if (inp.equals(com[1].toLowerCase())) {
+						fin = com[0].toLowerCase();
+					}
+				} else {
+					break;
+				}
+			}
+			if (fin.toLowerCase().equals("bfcc")) {
+				fin = "";
+			}
 			Method method;
 			try {
-				method = game.getClass().getMethod(inp);
-				method.invoke(this);
+				method = bfcc.getClass().getMethod(fin.toLowerCase());
+				method.invoke(bfcc);
 			} catch (Exception e) {
-				System.out.println(e);
-			}
-			if (inp.equals(WL)) {
-				System.out.println("Walk left");
-			}
-			if (inp.equals(WR)) {
-				System.out.println("Walk right");
-			}
-			if (inp.equals(J)) {
-				System.out.println("Jump");
-			}
-			if (inp.equals(C)) {
-				System.out.println("Crouch");
-			}
-			if (inp.equals(CH)) {
-				System.out.println("Chat");
+				if (debug) {
+					System.out.println(e);
+					System.out.println(inp);
+				}
 			}
 		}
+	}
+
+	public void error() {
+		System.out.println("this is bad");
 	}
 }

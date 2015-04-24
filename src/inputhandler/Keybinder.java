@@ -51,17 +51,29 @@ public class Keybinder {
 			String fin = null;
 			for (int i = 0; i < coms.length; i++) {
 				if (!(coms[i] == null)) {
-					com = coms[i].split(":");
-					if (inp.equals(com[1].toLowerCase())) {
-						fin = com[0].toLowerCase();
+					try {
+						com = coms[i].split(":");
+						if (inp.equals(com[1].toLowerCase())) {
+							fin = com[0].toLowerCase();
+							if (fin.toLowerCase().equals("bfcc")) {
+								fin = "";
+								if (debug) {
+									System.out.println("Illegal operation");
+								}
+							}
+						}
+					} catch (Exception e) {
+						if (debug) {
+							System.out.println("Failed to split line "
+									+ (i + 1));
+						}
 					}
+
 				} else {
 					break;
 				}
 			}
-			if (fin.toLowerCase().equals("bfcc")) {
-				fin = "";
-			}
+
 			Method method;
 			try {
 				method = bfcc.getClass().getMethod(fin.toLowerCase());

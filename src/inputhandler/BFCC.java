@@ -10,24 +10,24 @@ public class BFCC {
 		this.game = game;
 	}
 
-	public void jump() {
-		s("jump");
+	public void jump(boolean state) {
+		s("jump "+state);
 	}
 
-	public void wright() {
-		s("walk right");
+	public void wright(boolean state) {
+		s("walk right "+state);
 	}
 
-	public void wleft() {
-		s("walk left");
+	public void wleft(boolean state) {
+		s("walk left "+state);
 	}
 
-	public void crouch() {
-		s("crouch");
+	public void crouch(boolean state) {
+		s("crouch "+state);
 	}
 
-	public void chat() {
-		s("chat");
+	public void chat(boolean state) {
+		s("chat "+state);
 	}
 
 	public void s(Object s) {

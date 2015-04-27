@@ -67,8 +67,7 @@ public abstract class Head implements Runnable {
 			System.exit(0);
 		}
 		version = glGetString(GL_VERSION);
-		Display.setTitle(title + " | " + 0
-				+ " ups, " + 0 + " fps");
+		Display.setTitle(title + " | " + 0 + " ups, " + 0 + " fps");
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 
 		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -84,7 +83,8 @@ public abstract class Head implements Runnable {
 
 	}
 
-	protected void init() throws InterruptedException, FileNotFoundException, IOException {
+	protected void init() throws InterruptedException, FileNotFoundException,
+			IOException {
 	}
 
 	protected void loadAssets() {
@@ -145,11 +145,11 @@ public abstract class Head implements Runnable {
 		double updateDelta = getUpdateDelta();
 		double renderDelta = getRenderDelta();
 		while (running) {
-			
+
 			if (Display.isCloseRequested()) {
 				running = false;
 			}
-			
+
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
@@ -183,17 +183,16 @@ public abstract class Head implements Runnable {
 				timer += 1000;
 
 				if (objects > 0) {
-					Display.setTitle(title
-							+ " | " + updates + " TICKS, " + frames + " FPS | "
-							+ objects + " Rendered");
+					Display.setTitle(title + " | " + updates + " TICKS, "
+							+ frames + " FPS | " + objects + " Rendered");
 				} else {
-					Display.setTitle(title
-							+ " | " + updates + " TICKS, " + frames + " FPS, " + delta +" Delta");
+					Display.setTitle(title + " | " + updates + " TICKS, "
+							+ frames + " FPS");
 				}
 
 				updates = 0;
 				frames = 0;
-				delta=0;
+				delta = 0;
 			}
 		}
 		quit();
@@ -206,7 +205,9 @@ public abstract class Head implements Runnable {
 
 	}
 
-	protected void update(double dt) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	protected void update(double dt) throws IOException,
+			IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
 	}
 
 	protected int render(double interpolation) {

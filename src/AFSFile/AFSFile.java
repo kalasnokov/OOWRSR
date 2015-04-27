@@ -12,7 +12,7 @@ public class AFSFile {
 	String recUrl;
 	boolean debug;
 	boolean broken;
-
+	int length;
 	// create file and create path to file
 	public AFSFile(String url, String[] strings, boolean debug) {
 		this.debug = debug;
@@ -50,6 +50,7 @@ public class AFSFile {
 				}
 			}
 		}
+		length=f.length();
 	}
 
 	// function to get true/false info from config lines
@@ -213,6 +214,9 @@ public class AFSFile {
 			}
 			writer.close();
 		}
+	}
+	public int getLength(){
+		return 0;
 	}
 
 	public void s(Object s) {

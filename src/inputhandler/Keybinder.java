@@ -50,7 +50,7 @@ public class Keybinder {
 					.toLowerCase();
 			String fin = null;
 			for (int i = 0; i < coms.length; i++) {
-				if (!(coms[i] == null)) {
+				if (coms[i] != null && coms[i+1].contains(":")) {
 					try {
 						com = coms[i].split(":");
 						if (inp.equals(com[1].toLowerCase())) {
@@ -58,14 +58,13 @@ public class Keybinder {
 							if (fin.toLowerCase().equals("bfcc")) {
 								fin = "";
 								if (debug) {
-									System.out.println("Illegal operation");
+									s("Illegal operation");
 								}
 							}
 						}
 					} catch (Exception e) {
-						if (debug) {
-							System.out.println("Failed to split line "
-									+ (i + 1));
+						if (true) {
+							s("Failed to split line " + (i + 1));
 						}
 					}
 
@@ -73,21 +72,22 @@ public class Keybinder {
 					break;
 				}
 			}
-
+			Boolean value = Keyboard.getEventKeyState();
+			
 			Method method;
 			try {
-				method = bfcc.getClass().getMethod(fin.toLowerCase());
-				method.invoke(bfcc);
+				method = bfcc.getClass().getMethod(fin.toLowerCase(),new Class[]{boolean.class});
+				method.invoke(bfcc, value);
 			} catch (Exception e) {
 				if (debug) {
-					System.out.println(e);
-					System.out.println(inp);
+					s(e);
+					s(inp);
 				}
 			}
 		}
 	}
 
-	public void error() {
-		System.out.println("this is bad");
+	public void s(Object s) {
+		System.out.println(s);
 	}
 }

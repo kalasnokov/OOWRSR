@@ -15,13 +15,7 @@ import java.util.Vector;
 
 public class Keybinder {
 	AFSFile f;
-	String WL;// walk left
-	String WR;// walk right
-	String J;// jump
-	String C;// crouch
-	String CH;// chat
 	Boolean debug;
-	String[] coms = new String[1000];
 	BFCC bfcc;
 	Vector<Key> keys = new Vector<Key>();
 
@@ -29,9 +23,11 @@ public class Keybinder {
 			IOException {
 		bfcc = new BFCC(game);
 		this.debug = debug;
+
 		f = new AFSFile("res/options/bindings.cfg", new Presets().bindings(),
 				debug);
-		int i = 1;
+
+		int i = 0;
 		while (true) {
 			if (!f.ReadLine(i).equals("null")) {
 				String binding = f.ReadLine(i);
@@ -40,8 +36,14 @@ public class Keybinder {
 				}
 				String[] AK = binding.split(":");
 				if (AK.length != 1) {
-					keys.add(new Key(AK[0].toLowerCase(), Keyboard
-							.getKeyIndex(AK[1].toUpperCase())));
+					if (AK.length > 2) {
+						keys.add(new ActionKey(AK[0].toLowerCase(), Integer
+								.parseInt(AK[1]), Keyboard.getKeyIndex(AK[2]
+								.toUpperCase())));
+					} else {
+						keys.add(new Key(AK[0].toLowerCase(), Keyboard
+								.getKeyIndex(AK[1].toUpperCase())));
+					}
 				}
 			} else {
 				break;
@@ -54,16 +56,20 @@ public class Keybinder {
 			IllegalArgumentException, InvocationTargetException {
 		while (Keyboard.next()) {
 			int inp = Keyboard.getEventKey();
-			String fin = null;
+			// s(Keyboard.getKeyName(inp));
+			String in = null;
 			for (Key key : keys) {
 				if (key.getKey() == inp) {
-					fin = key.getAction();
+					in = key.getAction();
+					if(key.getClass().getSimpleName().equals("ActionKey")){
+						
+					}
 				}
 			}
 			Boolean value = Keyboard.getEventKeyState();
 			Method method;
 			try {
-				method = bfcc.getClass().getMethod(fin.toLowerCase(),
+				method = bfcc.getClass().getMethod(in.toLowerCase(),
 						new Class[] { boolean.class });
 				method.invoke(bfcc, value);
 			} catch (Exception e) {

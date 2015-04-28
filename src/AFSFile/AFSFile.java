@@ -13,6 +13,7 @@ public class AFSFile {
 	boolean debug;
 	boolean broken;
 	long length;
+
 	// create file and create path to file
 	public AFSFile(String url, String[] strings, boolean debug) {
 		this.debug = debug;
@@ -50,9 +51,9 @@ public class AFSFile {
 				}
 			}
 		}
-		length=f.length();
-		if(debug){
-			System.out.println("File length: "+length);
+		length = f.length();
+		if (debug) {
+			System.out.println("File length: " + length);
 		}
 	}
 
@@ -218,7 +219,8 @@ public class AFSFile {
 			writer.close();
 		}
 	}
-	public float getLength(){
+
+	public float getLength() {
 		return length;
 	}
 

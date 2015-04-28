@@ -11,6 +11,7 @@ import Engine.Game;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Vector;
 
 public class Keybinder {
 	AFSFile f;
@@ -22,6 +23,7 @@ public class Keybinder {
 	Boolean debug;
 	String[] coms = new String[1000];
 	BFCC bfcc;
+	Vector<Key> keys = new Vector<Key>();
 
 	public Keybinder(Boolean debug, Game game) throws FileNotFoundException,
 			IOException {
@@ -31,9 +33,15 @@ public class Keybinder {
 				debug);
 		int i = 1;
 		while (true) {
-			if (!f.ReadLine(i).isEmpty()) {
-				coms[i - 1] = f.ReadLine(i);
+			if (!f.ReadLine(i).equals("null")) {
+				String binding = f.ReadLine(i);
 				if (debug) {
+					s("Read line " + (i + 1) + " as " + binding);
+				}
+				String[] AK = binding.split(":");
+				if (AK.length != 1) {
+					keys.add(new Key(AK[0].toLowerCase(), Keyboard
+							.getKeyIndex(AK[1].toUpperCase())));
 				}
 			} else {
 				break;
@@ -45,38 +53,18 @@ public class Keybinder {
 	public void readinput(Game game) throws IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
 		while (Keyboard.next()) {
-			String[] com = new String[2];
-			String inp = Keyboard.getKeyName(Keyboard.getEventKey())
-					.toLowerCase();
+			int inp = Keyboard.getEventKey();
 			String fin = null;
-			for (int i = 0; i < coms.length; i++) {
-				if (coms[i] != null && coms[i+1].contains(":")) {
-					try {
-						com = coms[i].split(":");
-						if (inp.equals(com[1].toLowerCase())) {
-							fin = com[0].toLowerCase();
-							if (fin.toLowerCase().equals("bfcc")) {
-								fin = "";
-								if (debug) {
-									s("Illegal operation");
-								}
-							}
-						}
-					} catch (Exception e) {
-						if (true) {
-							s("Failed to split line " + (i + 1));
-						}
-					}
-
-				} else {
-					break;
+			for (Key key : keys) {
+				if (key.getKey() == inp) {
+					fin = key.getAction();
 				}
 			}
 			Boolean value = Keyboard.getEventKeyState();
-			
 			Method method;
 			try {
-				method = bfcc.getClass().getMethod(fin.toLowerCase(),new Class[]{boolean.class});
+				method = bfcc.getClass().getMethod(fin.toLowerCase(),
+						new Class[] { boolean.class });
 				method.invoke(bfcc, value);
 			} catch (Exception e) {
 				if (debug) {

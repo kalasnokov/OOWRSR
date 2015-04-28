@@ -1,18 +1,15 @@
 package Engine;
 
 import inputhandler.Keybinder;
-import inputhandler.Keys;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 import org.lwjgl.input.Cursor;
-import org.lwjgl.input.Keyboard;
 
 public class Game extends Head {
 
-	public Keys keys;
 	public Cursor cursor;
 	public boolean paused;
 	public State gameState;
@@ -35,8 +32,6 @@ public class Game extends Head {
 
 		UPDATES_PER_SECOND = 60;
 		gameState = State.MENU;
-
-		keys = new Keys();
 		Keybinder= new Keybinder(debug, this);
 	}
 
@@ -45,12 +40,7 @@ public class Game extends Head {
 	}
 
 	public void handleInputs(double dt) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		if (keys.keyPressed(Keyboard.KEY_ESCAPE)) {
-			if (gameState != State.MENU)
-				paused = !paused;
-		}
 		Keybinder.readinput(this);
-		keys.setKeys();
 	}
 
 	public void quit() {
@@ -62,6 +52,7 @@ public class Game extends Head {
 			gameState = State.PLAYING;
 			oldState = State.MENU;
 		}
+		Keybinder.update(this);
 	}
 
 	public int render(double interpolation) {
@@ -72,6 +63,7 @@ public class Game extends Head {
 			if (gameState != State.PLAYING)
 				interp = 0;
 		}
+		Keybinder.render(this);
 		return 0;
 	}
 

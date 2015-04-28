@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.lwjgl.input.Keyboard;
 
+import UI.UIObjects.Cursor;
 import AFSFile.AFSFile;
 import AFSFile.Presets;
 import Engine.Game;
@@ -18,15 +19,16 @@ public class Keybinder {
 	Boolean debug;
 	BFCC bfcc;
 	Vector<Key> keys = new Vector<Key>();
+	Cursor cursor;
 
 	public Keybinder(Boolean debug, Game game) throws FileNotFoundException,
 			IOException {
+		cursor=new Cursor(game);
 		bfcc = new BFCC(game);
 		this.debug = debug;
 
 		f = new AFSFile("res/options/bindings.cfg", new Presets().bindings(),
 				debug);
-
 		int i = 0;
 		while (true) {
 			if (!f.ReadLine(i).equals("null")) {
@@ -37,9 +39,9 @@ public class Keybinder {
 				String[] AK = binding.split(":");
 				if (AK.length != 1) {
 					if (AK.length > 2) {
-						keys.add(new ActionKey(AK[0].toLowerCase(), Integer
-								.parseInt(AK[1]), Keyboard.getKeyIndex(AK[2]
-								.toUpperCase())));
+						keys.add(new Key(AK[0].toLowerCase(), Keyboard
+								.getKeyIndex(AK[2].toUpperCase()), Integer
+								.parseInt(AK[1])));
 					} else {
 						keys.add(new Key(AK[0].toLowerCase(), Keyboard
 								.getKeyIndex(AK[1].toUpperCase())));
@@ -58,20 +60,25 @@ public class Keybinder {
 			int inp = Keyboard.getEventKey();
 			// s(Keyboard.getKeyName(inp));
 			String in = null;
+			int num = 0;
 			for (Key key : keys) {
 				if (key.getKey() == inp) {
 					in = key.getAction();
-					if(key.getClass().getSimpleName().equals("ActionKey")){
-						
-					}
+					num = key.getNum();
 				}
 			}
 			Boolean value = Keyboard.getEventKeyState();
 			Method method;
 			try {
-				method = bfcc.getClass().getMethod(in.toLowerCase(),
-						new Class[] { boolean.class });
-				method.invoke(bfcc, value);
+				if (num != 0) {
+					method = bfcc.getClass().getMethod(in.toLowerCase(),
+							new Class[] { boolean.class, int.class });
+					method.invoke(bfcc, value, num);
+				} else {
+					method = bfcc.getClass().getMethod(in.toLowerCase(),
+							new Class[] { boolean.class });
+					method.invoke(bfcc, value);
+				}
 			} catch (Exception e) {
 				if (debug) {
 					s(e);
@@ -79,6 +86,12 @@ public class Keybinder {
 				}
 			}
 		}
+	}
+	public void update(Game game){
+		cursor.update(game);
+	}
+	public void render(Game game){
+		cursor.render(game);
 	}
 
 	public void s(Object s) {

@@ -46,6 +46,10 @@ public class BFCC {
 		s("special attack " + state);
 	}
 
+	public void menu(boolean state) {
+		s("escape " + state);
+	}
+
 	public void action(boolean state, int num) {
 		s("action " + num + " " + state);
 	}

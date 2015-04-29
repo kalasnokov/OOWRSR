@@ -8,6 +8,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.lwjgl.input.Cursor;
 
+import UI.UIObjects.Button;
+
 public class Game extends Head {
 
 	public Cursor cursor;
@@ -17,7 +19,8 @@ public class Game extends Head {
 	public int xoffset = 0;
 	public int yoffset = 0;
 	private Keybinder Keybinder;
-	boolean debug=false;
+	boolean debug = false;
+	Button button;
 
 	public enum State {
 		MENU, PLAYING, STARTING
@@ -32,21 +35,25 @@ public class Game extends Head {
 
 		UPDATES_PER_SECOND = 60;
 		gameState = State.MENU;
-		Keybinder= new Keybinder(debug, this);
+		Keybinder = new Keybinder(debug, this);
+		button = new Button(0, 0, this);
 	}
 
 	public void loadAssets() {
 
 	}
 
-	public void handleInputs(double dt) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void handleInputs(double dt) throws IOException,
+			IllegalAccessException, IllegalArgumentException,
+			InvocationTargetException {
 		Keybinder.readinput(this);
 	}
 
 	public void quit() {
 	}
 
-	public void update(double dt) throws IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	public void update(double dt) throws IOException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
 		handleInputs(dt);
 		if (gameState == State.STARTING) {
 			gameState = State.PLAYING;

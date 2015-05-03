@@ -1,0 +1,7 @@
+User Input Creator File for the character creator.
+Type:x:y:width:height:url:action
+{
+bar:x="900":width="stretch":height="stretch":url="res/sprites/UI/bars/bar1.png":
+Button:x="right":y="bottom":width="120":height="50":url="res/sprites/UI/buttons/btn_1/":Action="exit":
+Button:x="1040":y="bottom":width="120":height="50":url="res/sprites/UI/buttons/btn_1/":Action="save":
+}

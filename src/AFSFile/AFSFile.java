@@ -55,6 +55,7 @@ public class AFSFile {
 		if (debug) {
 			System.out.println("File length: " + length);
 		}
+		
 	}
 
 	// function to get true/false info from config lines

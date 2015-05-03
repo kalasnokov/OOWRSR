@@ -16,8 +16,10 @@ public class Sprite implements Serializable {
 	private static final long serialVersionUID = -4308173445041191679L;
 	public Texture texture;
 	public double x, y, width, height;
+	public String path;
 
 	public Sprite(String path) {
+		this.path = path;
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER,
 				GL11.GL_NEAREST);
 		try {
@@ -106,6 +108,17 @@ public class Sprite implements Serializable {
 		GL11.glEnd();
 	}
 
+	public void changeURL(String url) {
+		if (!path.equals(url)) {
+			try {
+				texture = TextureLoader.getTexture("JPG",
+						ResourceLoader.getResourceAsStream(url));
+			} catch (IOException e) {
+			}
+			path=url;
+		}
+	}
+
 	public void texCoords() {
 		for (int i = 0; i <= width; i++) {
 			double a = Math.pow(2, i + 1);
@@ -122,5 +135,19 @@ public class Sprite implements Serializable {
 				break;
 			}
 		}
+	}
+
+	public void setWidth(int width) {
+		this.width=width;
+	}
+	public void setHeight(int height) {
+		this.height=height;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+	public double getHeight() {
+		return height;
 	}
 }

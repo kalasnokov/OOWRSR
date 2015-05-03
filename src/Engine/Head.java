@@ -84,7 +84,7 @@ public abstract class Head implements Runnable {
 	}
 
 	protected void init() throws InterruptedException, FileNotFoundException,
-			IOException {
+			IOException, Exception {
 	}
 
 	protected void loadAssets() {
@@ -124,6 +124,9 @@ public abstract class Head implements Runnable {
 			init();
 		} catch (InterruptedException | IOException e1) {
 			e1.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		loadAssets();
 		Cursor emptyCursor;

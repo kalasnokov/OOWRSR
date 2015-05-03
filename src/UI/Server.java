@@ -16,7 +16,7 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.UIManager;
 
 import AFSFile.AFSFile;
-import AFSFile.Presets;
+import AFSFile.Preset;
 import Datahandlers.Base;
 
 public class Server extends JFrame {
@@ -26,7 +26,7 @@ public class Server extends JFrame {
 
 	public Server() throws IOException {
 		super("OOWRSR Server");
-		config = new AFSFile("res/options/opt.cfg", new Presets().options(),
+		config = new AFSFile("res/options/opt.cfg", new Preset().options(),
 				true);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

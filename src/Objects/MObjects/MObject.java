@@ -5,10 +5,9 @@ import java.io.IOException;
 import Datahandlers.Base;
 import Datahandlers.Clientinfo;
 import Objects.BObject;
-import Objects.PChar;
+import Objects.ODC;
 
 public class MObject extends BObject {
-	PChar pc;
 	boolean running = true;
 	boolean moving = false;
 	boolean server;
@@ -17,20 +16,21 @@ public class MObject extends BObject {
 	Clientinfo CI;
 	Base base;
 
-	public MObject(int x, int y, PChar pc, Clientinfo CI, boolean server,
+	public MObject(int x, int y, ODC odc, Clientinfo CI, boolean server,
 			Base base) {
-		super(x, y);
+		super(x, y, "make reader first");
 		this.CI = CI;
 		this.server = server;
-		this.pc = pc;
 		this.base = base;
 		new Thread(new Runnable() {
 			public void run() {
 				while (running) {
 					update();
 					try {
-						Thread.sleep(17);
-					} catch (InterruptedException e) {
+						Thread.sleep(17);// change to be more dynamic, take into
+											// account the time it takes to
+											// execute the thread
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -42,7 +42,9 @@ public class MObject extends BObject {
 					while (running) {
 						try {
 							sendData();
-							Thread.sleep(500);
+							Thread.sleep(500);// change to be more dynamic, take
+												// into account the time it
+												// takes to execute the thread
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

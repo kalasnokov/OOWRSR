@@ -2,23 +2,20 @@ package Engine;
 
 import inputhandler.Keybinder;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
-import org.lwjgl.input.Cursor;
-
+import UI.UI;
 import UI.UIObjects.Button;
 
 public class Game extends Head {
-
-	public Cursor cursor;
+	public UI c;
 	public boolean paused;
 	public State gameState;
 	public State oldState;
 	public int xoffset = 0;
 	public int yoffset = 0;
-	private Keybinder Keybinder;
+	public Keybinder Keybinder;
 	boolean debug = false;
 	Button button;
 
@@ -30,13 +27,12 @@ public class Game extends Head {
 
 	}
 
-	public void init() throws InterruptedException, FileNotFoundException,
-			IOException {
+	public void init() throws Exception {
 
 		UPDATES_PER_SECOND = 60;
 		gameState = State.MENU;
 		Keybinder = new Keybinder(debug, this);
-		button = new Button(0, 0, this);
+		c = new UI("res/options/UIS/Creator.UICT", this);
 	}
 
 	public void loadAssets() {
@@ -59,6 +55,7 @@ public class Game extends Head {
 			gameState = State.PLAYING;
 			oldState = State.MENU;
 		}
+		c.update();
 		Keybinder.update(this);
 	}
 
@@ -69,6 +66,9 @@ public class Game extends Head {
 			double interp = interpolation;
 			if (gameState != State.PLAYING)
 				interp = 0;
+		}
+		if (c.isActive()) {
+			c.render();
 		}
 		Keybinder.render(this);
 		return 0;

@@ -18,7 +18,7 @@ public class UI {
 	public UI(String url, Game game) throws Exception {
 		this.url = url;
 		this.game = game;
-		active=true;
+		active = true;
 		readURL();
 	}
 
@@ -43,6 +43,7 @@ public class UI {
 	public void readURL() throws Exception {
 		AFSFile f = new AFSFile(url, new Preset().creatorUI(), true);
 		Boolean primed = false;
+		Boolean anchorLeft = false;
 		int x = 0;
 		int y = 0;
 		int width = 0;
@@ -63,6 +64,10 @@ public class UI {
 					line = line.toLowerCase();
 					String[] part = line.split(":");
 					for (int p = 0; p < part.length; p++) {
+						if (part[p].contains("anchor=\"")) {
+							String[] tmp = part[p].split("\"");
+							anchorLeft = (tmp[1].equals("left"));
+						}
 						if (part[p].contains("x=\"")) {
 							String[] tmp = part[p].split("\"");
 							if (tmp[1].equals("right")) {
@@ -107,10 +112,11 @@ public class UI {
 
 					if (part[0].toLowerCase().equals("button")) {
 						items.add(new Button(x, y, width, height, URL, action,
-								game));
+								anchorLeft, game));
 					}
 					if (part[0].toLowerCase().equals("bar")) {
-						items.add(new Bar(x, y, width, height, URL,game));
+						items.add(new Bar(x, y, width, height, URL, anchorLeft,
+								game));
 					}
 				}
 

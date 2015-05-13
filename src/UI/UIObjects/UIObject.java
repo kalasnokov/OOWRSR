@@ -30,4 +30,9 @@ public class UIObject extends BObject {
 			this.y -= sprite.getHeight();
 		}
 	}
+	
+	public void setUIFont(String action){
+		setText(action);
+		setFont("Verdana");
+	}
 }

@@ -88,8 +88,9 @@ public class UI {
 							String[] tmp = part[p].split("\"");
 							if (tmp[1].equals("stretch")) {
 								tmp[1] = "0";
+							} else {
+								width = Integer.parseInt(tmp[1]);
 							}
-							width = Integer.parseInt(tmp[1]);
 						}
 						if (part[p].contains("height=\"")) {
 							String[] tmp = part[p].split("\"");
